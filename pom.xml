@@ -14,14 +14,14 @@
 	<parent>
 		<groupId>org.springframework.boot</groupId>
 		<artifactId>spring-boot-starter-parent</artifactId>
-		<version>2.3.0.RELEASE</version>
+		<version>3.1.0</version>
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
-		<java.version>11</java.version>
+		<java.version>17</java.version>
 	</properties>
 
 	<dependencies>
@@ -62,7 +62,7 @@
 		<dependency>
 			<groupId>javax.xml.bind</groupId>
 			<artifactId>jaxb-api</artifactId>
-			<version>2.3.0</version>
+			<version>2.4.0-b180830.0359</version>
 		</dependency>
 
 		<dependency>
@@ -77,6 +77,43 @@
 			<plugin>
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
+				<configuration>
+					<image>
+						<name>
+							docker.io/ksvkvv90/s-${project.artifactId}:${project.version}
+						</name>
+						<env>
+							<BP_JVM_VERSION>17</BP_JVM_VERSION>
+						</env>
+					</image>
+
+				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>com.google.cloud.tools</groupId>
+				<artifactId>jib-maven-plugin</artifactId>
+				<version>3.3.2</version>
+				<configuration>
+<!--					<to>-->
+<!--						<image>${docker.image.prefix}/${project.artifactId}-${maven.build.timestamp}</image>-->
+<!--					</to>-->
+					<allowInsecureRegistries>true</allowInsecureRegistries>
+					<to>
+						<image>localhost:5000/ksvkvv90/${project.artifactId}:${project.version}</image>
+						<auth>
+							<username>${env.REGISTRY_USERNAME}</username>
+							<password>${env.REGISTRY_PASSWORD}</password>
+						</auth>
+					</to>
+				</configuration>
+<!--				<executions>-->
+<!--					<execution>-->
+<!--						<phase>package</phase>-->
+<!--						<goals>-->
+<!--							<goal>build</goal>-->
+<!--						</goals>-->
+<!--					</execution>-->
+<!--				</executions>-->
 			</plugin>
 		</plugins>
 	</build>
